@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>张咕咕咕咕的个人博客</title>
+  <link rel="icon" href="image/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #111118;
+      --bg-card: #16161e;
+      --bg-card-hover: #1e1e2a;
+      --accent: #00d4ff;
+      --accent-2: #7b61ff;
+      --accent-gradient: linear-gradient(135deg, #00d4ff, #7b61ff);
+      --text-primary: #f0f0f5;
+      --text-secondary: #8888a0;
+      --border: #222233;
+      --radius: 12px;
+      --radius-lg: 20px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    img { max-width: 100%; display: block; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ===== HEADER ===== */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: var(--transition);
+    }
+
+    .header .container {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+
+    .logo {
+      font-size: 1.3rem; font-weight: 700;
+      background: var(--accent-gradient); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .nav-links {
+      display: flex; gap: 32px; list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem; font-weight: 500; color: var(--text-secondary);
+      transition: var(--transition); position: relative;
+    }
+
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px; background: var(--accent-gradient);
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .menu-toggle {
+      display: none; background: none; border: none; color: var(--text-primary);
+      font-size: 1.5rem; cursor: pointer;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding-top: 64px; position: relative; overflow: hidden;
+    }
+
+    .hero::before {
+      content: ''; position: absolute; top: -50%; right: -20%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: ''; position: absolute; bottom: -30%; left: -10%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(123,97,255,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero .container {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      align-items: center; position: relative; z-index: 1;
+    }
+
+    .hero-content { animation: fadeInUp 0.8s ease-out; }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px; border-radius: 50px;
+      background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2);
+      font-size: 0.8rem; color: var(--accent); font-weight: 500;
+      margin-bottom: 24px;
+    }
+
+    .hero-tag .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); animation: pulse 2s infinite;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800; line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 .highlight {
+      background: var(--accent-gradient); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.1rem; color: var(--text-secondary);
+      max-width: 500px; margin-bottom: 32px;
+    }
+
+    .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 50px; font-size: 0.95rem;
+      font-weight: 600; transition: var(--transition); cursor: pointer;
+      border: none; font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--accent-gradient); color: #000;
+      box-shadow: 0 4px 20px rgba(0,212,255,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(0,212,255,0.4);
+    }
+
+    .btn-outline {
+      background: transparent; color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent); color: var(--accent);
+    }
+
+    .hero-visual {
+      display: flex; justify-content: center; align-items: center;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    .hero-avatar {
+      width: 320px; height: 320px; border-radius: 50%;
+      background: var(--accent-gradient); padding: 4px;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .hero-avatar img {
+      width: 100%; height: 100%; border-radius: 50%;
+      object-fit: cover; background: var(--bg-secondary);
+    }
+
+    .social-links {
+      display: flex; gap: 16px; margin-top: 24px;
+    }
+
+    .social-links a {
+      width: 42px; height: 42px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg-card); border: 1px solid var(--border);
+      font-size: 1.2rem; color: var(--text-secondary);
+      transition: var(--transition);
+    }
+
+    .social-links a:hover {
+      border-color: var(--accent); color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ===== SECTIONS ===== */
+    section { padding: 80px 0; }
+
+    .section-header {
+      text-align: center; margin-bottom: 48px;
+    }
+
+    .section-header h2 {
+      font-size: 2rem; font-weight: 700; margin-bottom: 12px;
+    }
+
+    .section-header p {
+      color: var(--text-secondary); font-size: 1rem; max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .section-header .line {
+      width: 60px; height: 3px; border-radius: 3px;
+      background: var(--accent-gradient); margin: 16px auto 0;
+    }
+
+    /* ===== LATEST POSTS ===== */
+    .posts-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+
+    .post-card {
+      background: var(--bg-card); border-radius: var(--radius-lg);
+      overflow: hidden; border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .post-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0,212,255,0.3);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+
+    .post-card .thumb {
+      height: 180px; overflow: hidden; position: relative;
+    }
+
+    .post-card .thumb img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .post-card:hover .thumb img { transform: scale(1.05); }
+
+    .post-card .thumb .tag {
+      position: absolute; top: 12px; left: 12px;
+      padding: 4px 12px; border-radius: 50px; font-size: 0.75rem;
+      font-weight: 600; background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px); color: var(--accent);
+    }
+
+    .post-card .body { padding: 20px; }
+
+    .post-card .date {
+      font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px;
+    }
+
+    .post-card h3 {
+      font-size: 1.05rem; font-weight: 600; margin-bottom: 8px;
+      line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    .post-card .excerpt {
+      font-size: 0.85rem; color: var(--text-secondary);
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    /* ===== FEATURED ===== */
+    .featured-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    }
+
+    .featured-card {
+      position: relative; border-radius: var(--radius-lg);
+      overflow: hidden; min-height: 280px;
+      display: flex; align-items: flex-end;
+      transition: var(--transition);
+    }
+
+    .featured-card:hover { transform: translateY(-4px); }
+
+    .featured-card .bg {
+      position: absolute; inset: 0;
+    }
+
+    .featured-card .bg img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .featured-card:hover .bg img { transform: scale(1.05); }
+
+    .featured-card .overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 100%);
+    }
+
+    .featured-card .content {
+      position: relative; z-index: 1; padding: 28px;
+      width: 100%;
+    }
+
+    .featured-card .tag {
+      display: inline-block; padding: 4px 12px; border-radius: 50px;
+      font-size: 0.75rem; font-weight: 600; background: var(--accent);
+      color: #000; margin-bottom: 12px;
+    }
+
+    .featured-card h3 {
+      font-size: 1.3rem; font-weight: 700; margin-bottom: 8px;
+    }
+
+    .featured-card p {
+      font-size: 0.85rem; color: var(--text-secondary);
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    /* ===== CATEGORIES ===== */
+    .categories-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;
+    }
+
+    .category-card {
+      background: var(--bg-card); border-radius: var(--radius);
+      padding: 28px 20px; text-align: center;
+      border: 1px solid var(--border); transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .category-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0,212,255,0.1);
+    }
+
+    .category-card .icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px; font-size: 1.5rem;
+      background: rgba(0,212,255,0.1); color: var(--accent);
+    }
+
+    .category-card:nth-child(2) .icon { background: rgba(123,97,255,0.1); color: var(--accent-2); }
+    .category-card:nth-child(3) .icon { background: rgba(255,107,107,0.1); color: #ff6b6b; }
+    .category-card:nth-child(4) .icon { background: rgba(255,193,7,0.1); color: #ffc107; }
+    .category-card:nth-child(5) .icon { background: rgba(0,230,118,0.1); color: #00e676; }
+
+    .category-card h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+
+    .category-card .count {
+      font-size: 0.8rem; color: var(--text-secondary);
+    }
+
+    /* ===== ABOUT ===== */
+    .about .container {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      align-items: center;
+    }
+
+    .about-text h2 { font-size: 2rem; font-weight: 700; margin-bottom: 20px; }
+
+    .about-text p {
+      color: var(--text-secondary); margin-bottom: 16px; font-size: 0.95rem;
+    }
+
+    .tech-stack {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px;
+    }
+
+    .tech-tag {
+      padding: 6px 16px; border-radius: 50px; font-size: 0.8rem;
+      font-weight: 500; background: var(--bg-card);
+      border: 1px solid var(--border); color: var(--text-secondary);
+      transition: var(--transition);
+    }
+
+    .tech-tag:hover {
+      border-color: var(--accent); color: var(--accent);
+    }
+
+    .about-visual {
+      display: flex; justify-content: center;
+    }
+
+    .about-image-wrapper {
+      position: relative; width: 300px; height: 300px;
+    }
+
+    .about-image-wrapper .circle {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(0,212,255,0.15);
+    }
+
+    .about-image-wrapper .circle:nth-child(1) {
+      inset: 0; animation: rotate 20s linear infinite;
+    }
+
+    .about-image-wrapper .circle:nth-child(2) {
+      inset: 20px; animation: rotate 15s linear infinite reverse;
+      border-color: rgba(123,97,255,0.15);
+    }
+
+    .about-image-wrapper .circle:nth-child(3) {
+      inset: 40px; animation: rotate 25s linear infinite;
+    }
+
+    .about-image-wrapper .avatar {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 160px; height: 160px; border-radius: 50%;
+      overflow: hidden; border: 3px solid var(--accent);
+    }
+
+    .about-image-wrapper .avatar img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0 24px;
+    }
+
+    .footer .container {
+      display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px;
+    }
+
+    .footer-brand .logo { font-size: 1.2rem; margin-bottom: 12px; }
+
+    .footer-brand p {
+      color: var(--text-secondary); font-size: 0.85rem; max-width: 300px;
+    }
+
+    .footer h4 {
+      font-size: 0.9rem; font-weight: 600; margin-bottom: 16px;
+    }
+
+    .footer ul { list-style: none; }
+
+    .footer ul li { margin-bottom: 10px; }
+
+    .footer ul a {
+      color: var(--text-secondary); font-size: 0.85rem;
+      transition: var(--transition);
+    }
+
+    .footer ul a:hover { color: var(--accent); }
+
+    .footer-bottom {
+      margin-top: 40px; padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.8rem; color: var(--text-secondary);
+    }
+
+    .footer-bottom .social { display: flex; gap: 12px; }
+
+    .footer-bottom .social a {
+      color: var(--text-secondary); transition: var(--transition);
+    }
+
+    .footer-bottom .social a:hover { color: var(--accent); }
+
+    /* ===== BACK TO TOP ===== */
+    .back-to-top {
+      position: fixed; bottom: 32px; right: 32px;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--accent-gradient); color: #000;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; cursor: pointer; border: none;
+      opacity: 0; transform: translateY(20px);
+      transition: var(--transition); z-index: 999;
+      box-shadow: 0 4px 16px rgba(0,212,255,0.3);
+    }
+
+    .back-to-top.visible { opacity: 1; transform: translateY(0); }
+    .back-to-top:hover { transform: translateY(-2px); }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .hero .container { grid-template-columns: 1fr; text-align: center; }
+      .hero p { margin: 0 auto 32px; }
+      .hero-buttons { justify-content: center; }
+      .hero-visual { display: none; }
+      .posts-grid { grid-template-columns: repeat(2, 1fr); }
+      .categories-grid { grid-template-columns: repeat(3, 1fr); }
+      .about .container { grid-template-columns: 1fr; text-align: center; }
+      .about-visual { margin-top: 40px; }
+      .tech-stack { justify-content: center; }
+      .footer .container { grid-template-columns: 1fr; text-align: center; }
+      .footer-bottom { flex-direction: column; gap: 12px; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed; top: 64px; left: 0; right: 0;
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(20px);
+        flex-direction: column; align-items: center;
+        padding: 32px 0; gap: 24px;
+        transform: translateY(-120%); transition: var(--transition);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-links.open { transform: translateY(0); }
+      .menu-toggle { display: block; }
+      .posts-grid { grid-template-columns: 1fr; }
+      .featured-grid { grid-template-columns: 1fr; }
+      .categories-grid { grid-template-columns: repeat(2, 1fr); }
+      section { padding: 60px 0; }
+    }
+
+    @media (max-width: 480px) {
+      .categories-grid { grid-template-columns: 1fr 1fr; }
+      .hero h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container">
+      <a href="home.html" class="logo">ZhangBlog</a>
+      <nav>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#hero">首页</a></li>
+          <li><a href="#posts">文章</a></li>
+          <li><a href="#featured">精选</a></li>
+          <li><a href="#categories">分类</a></li>
+          <li><a href="#about">关于</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <ion-icon name="menu-outline"></ion-icon>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-tag"><span class="dot"></span> 正在写代码...</div>
+        <h1>你好，我是<br><span class="highlight">张咕咕咕咕</span></h1>
+        <p>一个热爱技术、喜欢折腾的开发者。在这里记录我的学习笔记、项目实践和生活随想。</p>
+        <div class="hero-buttons">
+          <a href="#posts" class="btn btn-primary">
+            <ion-icon name="document-text-outline"></ion-icon> 阅读文章
+          </a>
+          <a href="#about" class="btn btn-outline">
+            <ion-icon name="person-outline"></ion-icon> 了解更多
+          </a>
+        </div>
+        <div class="social-links">
+          <a href="#" aria-label="GitHub"><ion-icon name="logo-github"></ion-icon></a>
+          <a href="#" aria-label="Twitter"><ion-icon name="logo-twitter"></ion-icon></a>
+          <a href="#" aria-label="Email"><ion-icon name="mail-outline"></ion-icon></a>
+          <a href="#" aria-label="RSS"><ion-icon name="rss-outline"></ion-icon></a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-avatar">
+          <img src="image/home.png" alt="avatar" onerror="this.style.display='none'">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LATEST POSTS -->
+  <section id="posts">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>最新文章</h2>
+        <p>最近的思考与记录</p>
+        <div class="line"></div>
+      </div>
+      <div class="posts-grid">
+        <article class="post-card reveal">
+          <div class="thumb">
+            <img src="image/recent-post-1.jpg" alt="" onerror="this.parentElement.style.background='linear-gradient(135deg,#1a1a2e,#16213e)'">
+            <span class="tag">前端开发</span>
+          </div>
+          <div class="body">
+            <div class="date">2025-06-10</div>
+            <h3>从零搭建现代前端项目工程化体系</h3>
+            <p class="excerpt">探索 Vite、TypeScript、ESLint 等工具的最佳实践，打造高效的前端开发工作流。</p>
+          </div>
+        </article>
+        <article class="post-card reveal">
+          <div class="thumb">
+            <img src="image/recent-post-2.jpg" alt="" onerror="this.parentElement.style.background='linear-gradient(135deg,#1a1a2e,#16213e)'">
+            <span class="tag">技术笔记</span>
+          </div>
+          <div class="body">
+            <div class="date">2025-06-05</div>
+            <h3>深入理解 JavaScript 异步编程模型</h3>
+            <p class="excerpt">从回调到 Promise，再到 async/await，理清 JavaScript 异步编程的演进之路。</p>
+          </div>
+        </article>
+        <article class="post-card reveal">
+          <div class="thumb">
+            <img src="image/recent-post-3.jpg" alt="" onerror="this.parentElement.style.background='linear-gradient(135deg,#1a1a2e,#16213e)'">
+            <span class="tag">生活随笔</span>
+          </div>
+          <div class="body">
+            <div class="date">2025-05-28</div>
+            <h3>程序员的一天：关于效率与生活的平衡</h3>
+            <p class="excerpt">分享我的日常作息和提高工作效率的一些小习惯。</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED -->
+  <section id="featured" style="background: var(--bg-secondary);">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>精选文章</h2>
+        <p>值得一看的推荐内容</p>
+        <div class="line"></div>
+      </div>
+      <div class="featured-grid">
+        <a href="#" class="featured-card reveal">
+          <div class="bg">
+            <img src="image/featured-1.png" alt="" onerror="this.parentElement.parentElement.style.background='linear-gradient(135deg,#0a1628,#1a1a2e)'">
+          </div>
+          <div class="overlay"></div>
+          <div class="content">
+            <span class="tag">置顶推荐</span>
+            <h3>2025 年前端技术趋势展望</h3>
+            <p>React Server Components、AI 辅助开发、WebAssembly 的未来发展方向。</p>
+          </div>
+        </a>
+        <a href="#" class="featured-card reveal">
+          <div class="bg">
+            <img src="image/featured-2.png" alt="" onerror="this.parentElement.parentElement.style.background='linear-gradient(135deg,#1a0a28,#1a1a2e)'">
+          </div>
+          <div class="overlay"></div>
+          <div class="content">
+            <span class="tag">热门文章</span>
+            <h3>我的开源项目成长之路</h3>
+            <p>从第一个 star 到 1000+，分享开源项目运营和社区建设的经验。</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section id="categories">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>文章分类</h2>
+        <p>按主题浏览内容</p>
+        <div class="line"></div>
+      </div>
+      <div class="categories-grid">
+        <div class="category-card reveal">
+          <div class="icon"><ion-icon name="code-slash-outline"></ion-icon></div>
+          <h4>前端开发</h4>
+          <span class="count">12 篇</span>
+        </div>
+        <div class="category-card reveal">
+          <div class="icon"><ion-icon name="server-outline"></ion-icon></div>
+          <h4>后端技术</h4>
+          <span class="count">8 篇</span>
+        </div>
+        <div class="category-card reveal">
+          <div class="icon"><ion-icon name="bulb-outline"></ion-icon></div>
+          <h4>技术笔记</h4>
+          <span class="count">15 篇</span>
+        </div>
+        <div class="category-card reveal">
+          <div class="icon"><ion-icon name="book-outline"></ion-icon></div>
+          <h4>学习记录</h4>
+          <span class="count">10 篇</span>
+        </div>
+        <div class="category-card reveal">
+          <div class="icon"><ion-icon name="cafe-outline"></ion-icon></div>
+          <h4>生活随笔</h4>
+          <span class="count">6 篇</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" style="background: var(--bg-secondary);">
+    <div class="container">
+      <div class="about-text reveal">
+        <h2>关于我</h2>
+        <p>Hi，我是张咕咕咕咕，一个热爱编程的开发者。喜欢探索新技术，用代码解决有趣的问题。</p>
+        <p>这个博客是我的个人空间，用来记录学习过程中的思考、实践中的经验，以及偶尔的生活感悟。希望这些内容能对你有所帮助。</p>
+        <p>如果你对文章内容有疑问，或者想交流技术，欢迎通过社交媒体联系我。</p>
+        <div class="tech-stack">
+          <span class="tech-tag">JavaScript</span>
+          <span class="tech-tag">TypeScript</span>
+          <span class="tech-tag">React</span>
+          <span class="tech-tag">Vue</span>
+          <span class="tech-tag">Node.js</span>
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">Git</span>
+          <span class="tech-tag">Docker</span>
+        </div>
+      </div>
+      <div class="about-visual reveal">
+        <div class="about-image-wrapper">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="avatar">
+            <img src="image/home.png" alt="avatar" onerror="this.style.background='var(--bg-card)'">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-brand">
+        <div class="logo">ZhangBlog</div>
+        <p>记录技术，分享生活。一个普通开发者的个人博客。</p>
+      </div>
+      <div>
+        <h4>快速导航</h4>
+        <ul>
+          <li><a href="#hero">首页</a></li>
+          <li><a href="#posts">最新文章</a></li>
+          <li><a href="#featured">精选文章</a></li>
+          <li><a href="#categories">文章分类</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>更多</h4>
+        <ul>
+          <li><a href="#about">关于我</a></li>
+          <li><a href="md-viewer.html">Markdown 查看器</a></li>
+          <li><a href="mipanelControl.html">MiPanel 控制台</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container">
+      <div class="footer-bottom">
+        <span>&copy; 2025 ZhangBlog. All rights reserved.</span>
+        <div class="social">
+          <a href="#"><ion-icon name="logo-github"></ion-icon></a>
+          <a href="#"><ion-icon name="logo-twitter"></ion-icon></a>
+          <a href="#"><ion-icon name="mail-outline"></ion-icon></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BACK TO TOP -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <ion-icon name="arrow-up-outline"></ion-icon>
+  </button>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    const backToTop = document.getElementById('backToTop');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      const isOpen = navLinks.classList.contains('open');
+      menuToggle.innerHTML = isOpen
+        ? '<ion-icon name="close-outline"></ion-icon>'
+        : '<ion-icon name="menu-outline"></ion-icon>';
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuToggle.innerHTML = '<ion-icon name="menu-outline"></ion-icon>';
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      backToTop.classList.toggle('visible', window.scrollY > 400);
+    });
+
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+  </script>
+</body>
+</html>
